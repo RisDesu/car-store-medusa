@@ -28,7 +28,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const salesChannelModuleService = container.resolve(Modules.SALES_CHANNEL);
   const storeModuleService = container.resolve(Modules.STORE);
 
-  const countries = ["gb", "de", "dk", "se", "fr", "es", "it"];
+  // European Union countries
+  const euCountries = ["gb", "de", "dk", "se", "fr", "es", "it"];
+  // South East Asia countries
+  const seCountries = ["vn", "sg", "my", "th", "ph", "id", "tl"];
 
   logger.info("Seeding store data...");
   const [store] = await storeModuleService.listStores();
@@ -59,10 +62,16 @@ export default async function seedDemoData({ container }: ExecArgs) {
         supported_currencies: [
           {
             currency_code: "eur",
-            is_default: true,
           },
           {
             currency_code: "usd",
+          },
+          {
+            currency_code: "jpy",
+          },
+          {
+            currency_code: "vnd",
+            is_default: true,
           },
         ],
         default_sales_channel_id: defaultSalesChannel[0].id,
@@ -76,7 +85,13 @@ export default async function seedDemoData({ container }: ExecArgs) {
         {
           name: "Europe",
           currency_code: "eur",
-          countries,
+          countries: euCountries,
+          payment_providers: ["pp_system_default"],
+        },
+        {
+          name: "South East Asia",
+          currency_code: "vnd",
+          countries: seCountries,
           payment_providers: ["pp_system_default"],
         },
       ],
@@ -87,7 +102,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
 
   logger.info("Seeding tax regions...");
   await createTaxRegionsWorkflow(container).run({
-    input: countries.map((country_code) => ({
+    input: euCountries.map((country_code) => ({
       country_code,
       provider_id: "tp_system",
     })),
@@ -108,14 +123,23 @@ export default async function seedDemoData({ container }: ExecArgs) {
             address_1: "",
           },
         },
+        {
+          name: "South East Asia Warehouse",
+          address: {
+            city: "Ho Chi Minh City",
+            country_code: "VN",
+            address_1: "",
+          },
+        },
       ],
     },
   });
-  const stockLocation = stockLocationResult[0];
+  const euStockLocation = stockLocationResult[0];
+  const seStockLocation = stockLocationResult[1];
 
   await link.create({
     [Modules.STOCK_LOCATION]: {
-      stock_location_id: stockLocation.id,
+      stock_location_id: euStockLocation.id,
     },
     [Modules.FULFILLMENT]: {
       fulfillment_provider_id: "manual_manual",
@@ -143,52 +167,103 @@ export default async function seedDemoData({ container }: ExecArgs) {
     shippingProfile = shippingProfileResult[0];
   }
 
-  const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
-    name: "European Warehouse delivery",
-    type: "shipping",
-    service_zones: [
+  const [euFulfillmentSet, seFulfillmentSet] =
+    await fulfillmentModuleService.createFulfillmentSets([
       {
-        name: "Europe",
-        geo_zones: [
+        name: "European Warehouse delivery",
+        type: "shipping",
+        service_zones: [
           {
-            country_code: "gb",
-            type: "country",
-          },
-          {
-            country_code: "de",
-            type: "country",
-          },
-          {
-            country_code: "dk",
-            type: "country",
-          },
-          {
-            country_code: "se",
-            type: "country",
-          },
-          {
-            country_code: "fr",
-            type: "country",
-          },
-          {
-            country_code: "es",
-            type: "country",
-          },
-          {
-            country_code: "it",
-            type: "country",
+            name: "Europe",
+            geo_zones: [
+              {
+                country_code: "gb",
+                type: "country",
+              },
+              {
+                country_code: "de",
+                type: "country",
+              },
+              {
+                country_code: "dk",
+                type: "country",
+              },
+              {
+                country_code: "se",
+                type: "country",
+              },
+              {
+                country_code: "fr",
+                type: "country",
+              },
+              {
+                country_code: "es",
+                type: "country",
+              },
+              {
+                country_code: "it",
+                type: "country",
+              },
+            ],
           },
         ],
       },
-    ],
+      {
+        name: "South East Asia Warehouse delivery",
+        type: "shipping",
+        service_zones: [
+          {
+            name: "South East Asia",
+            geo_zones: [
+              {
+                country_code: "vn",
+                type: "country",
+              },
+              {
+                country_code: "sg",
+                type: "country",
+              },
+              {
+                country_code: "my",
+                type: "country",
+              },
+              {
+                country_code: "th",
+                type: "country",
+              },
+              {
+                country_code: "ph",
+                type: "country",
+              },
+              {
+                country_code: "id",
+                type: "country",
+              },
+              {
+                country_code: "tl",
+                type: "country",
+              },
+            ],
+          },
+        ],
+      },
+    ]);
+
+  await link.create({
+    [Modules.STOCK_LOCATION]: {
+      stock_location_id: euStockLocation.id,
+    },
+    [Modules.FULFILLMENT]: {
+      fulfillment_set_id: euFulfillmentSet.id,
+    },
   });
 
   await link.create({
     [Modules.STOCK_LOCATION]: {
-      stock_location_id: stockLocation.id,
+      stock_location_id: seStockLocation.id,
     },
     [Modules.FULFILLMENT]: {
-      fulfillment_set_id: fulfillmentSet.id,
+      fulfillment_set_id: seFulfillmentSet.id,
     },
   });
 
@@ -198,7 +273,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
         name: "Standard Shipping",
         price_type: "flat",
         provider_id: "manual_manual",
-        service_zone_id: fulfillmentSet.service_zones[0].id,
+        service_zone_id: euFulfillmentSet.service_zones[0].id,
         shipping_profile_id: shippingProfile.id,
         type: {
           label: "Standard",
@@ -236,7 +311,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
         name: "Express Shipping",
         price_type: "flat",
         provider_id: "manual_manual",
-        service_zone_id: fulfillmentSet.service_zones[0].id,
+        service_zone_id: euFulfillmentSet.service_zones[0].id,
         shipping_profile_id: shippingProfile.id,
         type: {
           label: "Express",
@@ -276,7 +351,13 @@ export default async function seedDemoData({ container }: ExecArgs) {
 
   await linkSalesChannelsToStockLocationWorkflow(container).run({
     input: {
-      id: stockLocation.id,
+      id: euStockLocation.id,
+      add: [defaultSalesChannel[0].id],
+    },
+  });
+  await linkSalesChannelsToStockLocationWorkflow(container).run({
+    input: {
+      id: seStockLocation.id,
       add: [defaultSalesChannel[0].id],
     },
   });
@@ -534,7 +615,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const inventoryLevels: CreateInventoryLevelInput[] = [];
   for (const inventoryItem of inventoryItems) {
     const inventoryLevel = {
-      location_id: stockLocation.id,
+      location_id: euStockLocation.id,
       stocked_quantity: 1000000,
       inventory_item_id: inventoryItem.id,
     };
