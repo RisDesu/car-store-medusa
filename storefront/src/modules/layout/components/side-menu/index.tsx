@@ -15,8 +15,11 @@ const SideMenuItems = {
   Account: "/account",
   Cart: "/cart",
 }
-
-const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
+type SideMenuProps = {
+  regions: HttpTypes.StoreRegion[] | null
+  collections?: HttpTypes.StoreCollection[] | null
+}
+const SideMenu = ({ regions, collections }: SideMenuProps) => {
   const toggleState = useToggleState()
 
   return (
@@ -69,6 +72,25 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                           </li>
                         )
                       })}
+                      {collections && collections.length > 0 && (
+                        <li>
+                          <h5 className="text-3xl leading-10">Collections</h5>
+                          <ul className="flex flex-col gap-2 mt-4 pl-4">
+                            {collections?.map((collection) => (
+                              <li key={collection.id}>
+                                <LocalizedClientLink
+                                  href={`/collections/${collection.handle}`}
+                                  className="text-2xl leading-8 hover:text-ui-fg-disabled"
+                                  onClick={close}
+                                  data-testid={`collection-${collection.handle}-link`}
+                                >
+                                  {collection.title}
+                                </LocalizedClientLink>
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      )}
                     </ul>
                     <div className="flex flex-col gap-y-6">
                       <div

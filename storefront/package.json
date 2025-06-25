@@ -12,15 +12,20 @@
     "build": "next build",
     "start": "next start -p 8000",
     "lint": "next lint",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "shadcn@latest": "npx shadcn@latest"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@medusajs/js-sdk": "latest",
     "@medusajs/ui": "latest",
     "@radix-ui/react-accordion": "^1.2.1",
+    "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-navigation-menu": "^1.2.13",
     "@stripe/react-stripe-js": "^1.7.2",
     "@stripe/stripe-js": "^1.29.0",
+    "@tabler/icons-react": "^3.34.0",
+    "class-variance-authority": "^0.7.1",
     "lodash": "^4.17.21",
     "next": "^15.3.1",
     "pg": "^8.11.3",
