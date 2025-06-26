@@ -1,0 +1,24 @@
+app = 'car-store-admin'
+primary_region = 'sin'
+
+[build]
+
+[http_service]
+  internal_port = 9000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '2gb'
+  cpu_kind = 'shared'
+  cpus = 2
+
+[env]
+  MEDUSA_ADMIN_ONBOARDING_TYPE = "nextjs"
+  STORE_CORS = "https://car-store-admin.fly.dev,https://car-store-medusa.vercel.app"
+  ADMIN_CORS = "https://car-store-admin.fly.dev,https://car-store-medusa.vercel.app"
+  AUTH_CORS = "https://car-store-admin.fly.dev,https://car-store-medusa.vercel.app"
+  MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY = "car-store-storefront"

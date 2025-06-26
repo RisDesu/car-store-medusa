@@ -13,7 +13,7 @@
     "medusa"
   ],
   "scripts": {
-    "build": "medusa build",
+    "build": "medusa build && ln -s .medusa/server/public/ public",
     "seed": "medusa exec ./src/scripts/seed.ts",
     "start": "medusa start",
     "dev": "medusa develop",
@@ -35,6 +35,7 @@
     "pg": "^8.13.0"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.10",
     "@medusajs/test-utils": "2.8.5",
     "@mikro-orm/cli": "6.4.3",
     "@swc/core": "1.5.7",

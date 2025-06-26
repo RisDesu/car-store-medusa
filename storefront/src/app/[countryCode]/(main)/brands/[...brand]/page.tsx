@@ -6,12 +6,6 @@ import { listRegions } from "@lib/data/regions"
 import { StoreRegion } from "@medusajs/types"
 import BrandTemplate from "@modules/brands/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
-import { listProductTypes } from "@lib/data/types"
-
-// Brand page props
-// params.brand: [brandHandle]
-// params.countryCode: string
-// searchParams: sortBy, page, type
 
 type Props = {
   params: Promise<{ brand: string[]; countryCode: string }>

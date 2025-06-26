@@ -202,7 +202,7 @@ export default async function Home(props: {
                   asChild
                   variant="secondary"
                 >
-                  <LocalizedClientLink href="/shop">
+                  <LocalizedClientLink href="/store">
                     Shop now
                   </LocalizedClientLink>
                 </Button>

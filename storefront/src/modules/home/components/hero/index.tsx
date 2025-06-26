@@ -19,7 +19,9 @@ const Hero = () => {
             </p>
             <div className="flex gap-4 flex-wrap mb-8">
               <Button asChild size="large" className="font-bold">
-                <LocalizedClientLink href="/shop">Shop now</LocalizedClientLink>
+                <LocalizedClientLink href="/store">
+                  Shop now
+                </LocalizedClientLink>
               </Button>
             </div>
             <div className="flex mt-8 gap-8">
