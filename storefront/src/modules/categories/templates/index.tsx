@@ -8,18 +8,21 @@ import { SortOptions } from "@modules/store/components/refinement-list/sort-prod
 import PaginatedProducts from "@modules/store/templates/paginated-products"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { HttpTypes } from "@medusajs/types"
+import { FilterProductsProps } from "@modules/store/components/refinement-list/filter-products"
 
 export default function CategoryTemplate({
   category,
   sortBy,
   page,
   countryCode,
+  data,
+  types,
 }: {
   category: HttpTypes.StoreProductCategory
   sortBy?: SortOptions
   page?: string
   countryCode: string
-}) {
+} & Pick<FilterProductsProps, "types" | "data">) {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
 
@@ -41,7 +44,12 @@ export default function CategoryTemplate({
       className="flex flex-col small:flex-row small:items-start py-6 content-container"
       data-testid="category-container"
     >
-      <RefinementList sortBy={sort} data-testid="sort-by-container" />
+      <RefinementList
+        sortBy={sort}
+        data-testid="sort-by-container"
+        data={data}
+        types={types}
+      />
       <div className="w-full">
         <div className="flex flex-row mb-8 text-2xl-semi gap-4">
           {parents &&
@@ -88,6 +96,7 @@ export default function CategoryTemplate({
             sortBy={sort}
             page={pageNumber}
             categoryId={category.id}
+            type={data.type}
             countryCode={countryCode}
           />
         </Suspense>

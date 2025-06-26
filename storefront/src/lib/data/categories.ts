@@ -26,7 +26,10 @@ export const listCategories = async (query?: Record<string, any>) => {
     .then(({ product_categories }) => product_categories)
 }
 
-export const getCategoryByHandle = async (categoryHandle: string[]) => {
+export const getCategoryByHandle = async (
+  categoryHandle: string[],
+  filter?: Record<string, string>
+) => {
   const handle = `${categoryHandle.join("/")}`
 
   const next = {
@@ -40,6 +43,7 @@ export const getCategoryByHandle = async (categoryHandle: string[]) => {
         query: {
           fields: "*category_children, *products",
           handle,
+          filter,
         },
         next,
         cache: "force-cache",

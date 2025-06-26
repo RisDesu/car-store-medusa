@@ -6,12 +6,14 @@ import LocalizedClientLink from "@modules/common/components/localized-client-lin
 import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import { listCollections } from "@lib/data/collections"
+import { listCategories } from "@lib/data/categories"
 
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
   const collections = await listCollections().then(
     ({ collections }) => collections
   )
+  const categories = await listCategories({ fields: "id,name,handle" })
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
@@ -19,7 +21,11 @@ export default async function Nav() {
         <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
-              <SideMenu regions={regions} collections={collections} />
+              <SideMenu
+                regions={regions}
+                collections={collections}
+                categories={categories}
+              />
             </div>
           </div>
 

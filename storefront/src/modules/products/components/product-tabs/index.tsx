@@ -6,6 +6,8 @@ import Refresh from "@modules/common/icons/refresh"
 
 import Accordion from "./accordion"
 import { HttpTypes } from "@medusajs/types"
+import { Avatar } from "@medusajs/ui"
+import Link from "next/link"
 
 type ProductTabsProps = {
   product: HttpTypes.StoreProduct
@@ -42,6 +44,9 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 }
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
+  const brand = (product as any).brand as
+    | { id: string; name: string; image: string; handle: string }
+    | undefined
   return (
     <div className="text-small-regular py-8">
       <div className="grid grid-cols-2 gap-x-8">
@@ -71,6 +76,20 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
                 ? `${product.length}L x ${product.width}W x ${product.height}H`
                 : "-"}
             </p>
+          </div>
+          <div>
+            <span className="font-semibold">Brand</span>
+            {brand ? (
+              <Link
+                href={`/brands/${brand.id}`}
+                className="flex gap-1 items-center px-1 rounded-2xl hover:bg-ui-bg-subtle-hover"
+              >
+                <Avatar src={brand?.image} fallback={brand.name} />
+                {brand.name}
+              </Link>
+            ) : (
+              <p>-</p>
+            )}
           </div>
         </div>
       </div>

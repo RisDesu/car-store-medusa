@@ -19,6 +19,7 @@ import {
   linkSalesChannelsToStockLocationWorkflow,
   updateStoresWorkflow,
 } from "@medusajs/medusa/core-flows";
+import { BRAND_MODULE } from "../modules/brand";
 
 export default async function seedDemoData({ container }: ExecArgs) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
@@ -27,6 +28,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const fulfillmentModuleService = container.resolve(Modules.FULFILLMENT);
   const salesChannelModuleService = container.resolve(Modules.SALES_CHANNEL);
   const storeModuleService = container.resolve(Modules.STORE);
+  const brandModuleService = container.resolve(BRAND_MODULE);
 
   // European Union countries
   const euCountries = ["gb", "de", "dk", "se", "fr", "es", "it"];
@@ -395,24 +397,64 @@ export default async function seedDemoData({ container }: ExecArgs) {
     input: {
       product_categories: [
         {
-          name: "Shirts",
+          name: "Maintenance & Care",
           is_active: true,
         },
         {
-          name: "Sweatshirts",
+          name: "Parts & Components",
           is_active: true,
         },
         {
-          name: "Pants",
+          name: "Interior Accessories",
           is_active: true,
         },
         {
-          name: "Merch",
+          name: "Exterior Accessories",
           is_active: true,
         },
       ],
     },
   });
+
+  const brands = [
+    {
+      name: "Tesla",
+      handle: "tesla",
+      image: "https://cdn.worldvectorlogo.com/logos/tesla-motors.svg",
+    },
+    {
+      name: "Ford",
+      handle: "ford",
+      image: "https://cdn.worldvectorlogo.com/logos/ford-1.svg",
+    },
+    {
+      name: "BMW",
+      handle: "bmw",
+      image: "https://cdn.worldvectorlogo.com/logos/bmw-2.svg",
+    },
+    {
+      name: "Mercedes-Benz",
+      handle: "mercedes-benz",
+      image: "https://cdn.worldvectorlogo.com/logos/mercedes-benz-9.svg",
+    },
+    {
+      name: "Toyota",
+      handle: "toyota",
+      image: "https://cdn.worldvectorlogo.com/logos/toyota-7.svg",
+    },
+    {
+      name: "Honda",
+      handle: "honda",
+      image: "https://cdn.worldvectorlogo.com/logos/honda-motorcycles-1.svg",
+    },
+    {
+      name: "Nissan",
+      handle: "nissan",
+      image: "https://cdn.worldvectorlogo.com/logos/nissan-1.svg",
+    },
+  ];
+
+  await brandModuleService.createBrands(brands);
 
   await createProductsWorkflow(container).run({
     input: {
@@ -420,7 +462,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
         {
           title: "Car Engine Oil",
           category_ids: [
-            categoryResult.find((cat) => cat.name === "Merch")!.id,
+            categoryResult.find((cat) => cat.name === "Maintenance & Care")!.id,
           ],
           description:
             "Premium synthetic engine oil for cars. Suitable for all modern engines.",
@@ -430,10 +472,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
           shipping_profile_id: shippingProfile.id,
           images: [
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-front.png",
+              url: "https://m.media-amazon.com/images/I/51rELvM-zRL._AC_SR300,300_.jpg",
             },
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-back.png",
+              url: "https://m.media-amazon.com/images/I/41aPb1G+WsL._AC_SR300,300_.jpg",
             },
           ],
           options: [{ title: "Volume", values: ["1L", "4L"] }],
@@ -464,7 +506,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
         {
           title: "Car Battery",
           category_ids: [
-            categoryResult.find((cat) => cat.name === "Merch")!.id,
+            categoryResult.find((cat) => cat.name === "Parts & Components")!.id,
           ],
           description: "High performance car battery with long life.",
           handle: "car-battery",
@@ -473,10 +515,16 @@ export default async function seedDemoData({ container }: ExecArgs) {
           shipping_profile_id: shippingProfile.id,
           images: [
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-front.png",
+              url: "https://m.media-amazon.com/images/I/61QIWKC6S6L._AC_SL1500_.jpg",
             },
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-back.png",
+              url: "https://m.media-amazon.com/images/I/61CmMusdNoL._AC_SL1500_.jpg",
+            },
+            {
+              url: "https://m.media-amazon.com/images/I/81DgaHcNgZL._AC_SL1500_.jpg",
+            },
+            {
+              url: "https://m.media-amazon.com/images/I/71Yc7Go1QLL._AC_SL1500_.jpg",
             },
           ],
           options: [{ title: "Type", values: ["Standard", "AGM"] }],
@@ -507,7 +555,8 @@ export default async function seedDemoData({ container }: ExecArgs) {
         {
           title: "Car Floor Mats",
           category_ids: [
-            categoryResult.find((cat) => cat.name === "Merch")!.id,
+            categoryResult.find((cat) => cat.name === "Interior Accessories")!
+              .id,
           ],
           description: "Durable and easy-to-clean car floor mats.",
           handle: "car-floor-mats",
@@ -516,10 +565,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
           shipping_profile_id: shippingProfile.id,
           images: [
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatpants-gray-front.png",
+              url: "https://m.media-amazon.com/images/I/61TTBxuCEuL._SS400_.jpg",
             },
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatpants-gray-back.png",
+              url: "https://m.media-amazon.com/images/I/61R+wKydtTL._SS400_.jpg",
             },
           ],
           options: [{ title: "Color", values: ["Black", "Beige"] }],
@@ -550,19 +599,25 @@ export default async function seedDemoData({ container }: ExecArgs) {
         {
           title: "Car Wiper Blades",
           category_ids: [
-            categoryResult.find((cat) => cat.name === "Merch")!.id,
+            categoryResult.find((cat) => cat.name === "Exterior Accessories")!
+              .id,
           ],
           description: "All-season car wiper blades for clear visibility.",
-          handle: "car-wiper-blades",
           weight: 500,
           status: ProductStatus.PUBLISHED,
           shipping_profile_id: shippingProfile.id,
           images: [
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/shorts-vintage-front.png",
+              url: "https://m.media-amazon.com/images/I/71cTysOgcaL._AC_SL1500_.jpg",
             },
             {
-              url: "https://medusa-public-images.s3.eu-west-1.amazonaws.com/shorts-vintage-back.png",
+              url: "https://m.media-amazon.com/images/I/71enRzMTX2L._AC_SL1500_.jpg",
+            },
+            {
+              url: "https://m.media-amazon.com/images/I/7152bDbI8lL._AC_SL1500_.jpg",
+            },
+            {
+              url: "https://m.media-amazon.com/images/I/71yA-BvZKlL._AC_SL1500_.jpg",
             },
           ],
           options: [{ title: "Size", values: ["16in", "20in", "24in"] }],
@@ -614,12 +669,18 @@ export default async function seedDemoData({ container }: ExecArgs) {
 
   const inventoryLevels: CreateInventoryLevelInput[] = [];
   for (const inventoryItem of inventoryItems) {
-    const inventoryLevel = {
+    const seInventoryLevel = {
       location_id: euStockLocation.id,
       stocked_quantity: 1000000,
       inventory_item_id: inventoryItem.id,
     };
-    inventoryLevels.push(inventoryLevel);
+    const seInventoryItem = {
+      location_id: seStockLocation.id,
+      stocked_quantity: 1000000,
+      inventory_item_id: inventoryItem.id,
+    };
+
+    inventoryLevels.push(seInventoryLevel, seInventoryItem);
   }
 
   await createInventoryLevelsWorkflow(container).run({

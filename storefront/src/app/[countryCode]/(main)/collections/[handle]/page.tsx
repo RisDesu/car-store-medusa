@@ -6,12 +6,16 @@ import { listRegions } from "@lib/data/regions"
 import { StoreCollection, StoreRegion } from "@medusajs/types"
 import CollectionTemplate from "@modules/collections/templates"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
+import { listProductTypes } from "@lib/data/types"
+import { listCategories } from "@lib/data/categories"
 
 type Props = {
   params: Promise<{ handle: string; countryCode: string }>
   searchParams: Promise<{
     page?: string
     sortBy?: SortOptions
+    category?: string
+    type?: string
   }>
 }
 
@@ -69,11 +73,13 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function CollectionPage(props: Props) {
   const searchParams = await props.searchParams
   const params = await props.params
-  const { sortBy, page } = searchParams
+  const { sortBy, page, category, type } = searchParams
 
   const collection = await getCollectionByHandle(params.handle).then(
     (collection: StoreCollection) => collection
   )
+  const categories = await listCategories()
+  const types = await listProductTypes()
 
   if (!collection) {
     notFound()
@@ -85,6 +91,9 @@ export default async function CollectionPage(props: Props) {
       page={page}
       sortBy={sortBy}
       countryCode={params.countryCode}
+      data={{ category, type }}
+      categories={categories}
+      types={types}
     />
   )
 }
