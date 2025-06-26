@@ -20,6 +20,7 @@ import {
   updateStoresWorkflow,
 } from "@medusajs/medusa/core-flows";
 import { BRAND_MODULE } from "../modules/brand";
+import BrandModuleService from "../modules/brand/service";
 
 export default async function seedDemoData({ container }: ExecArgs) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
@@ -28,7 +29,9 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const fulfillmentModuleService = container.resolve(Modules.FULFILLMENT);
   const salesChannelModuleService = container.resolve(Modules.SALES_CHANNEL);
   const storeModuleService = container.resolve(Modules.STORE);
-  const brandModuleService = container.resolve(BRAND_MODULE);
+  const brandModuleService = container.resolve(
+    BRAND_MODULE
+  ) as BrandModuleService;
 
   // European Union countries
   const euCountries = ["gb", "de", "dk", "se", "fr", "es", "it"];
