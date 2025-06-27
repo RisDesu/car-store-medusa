@@ -4,14 +4,13 @@ import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
-import { Button, Heading } from "@medusajs/ui"
+import { Button, Container, Heading } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Image from "next/image"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
-  description:
-    "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
+  title: "Vee Store",
+  description: "Car accessories for the modern driver",
 }
 
 export default async function Home(props: {
@@ -35,9 +34,6 @@ export default async function Home(props: {
     <>
       <Hero />
       <div className="py-12">
-        <div className="px-12">
-          <Heading>Featured Products</Heading>
-        </div>
         <ul className="flex flex-col gap-x-6">
           <FeaturedProducts collections={collections} region={region} />
         </ul>
@@ -56,48 +52,42 @@ export default async function Home(props: {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="w-full">
-                <div className="h-full rounded-lg border-0 shadow-sm">
-                  <div className="p-6 text-center">
-                    <div className="bg-ui-button-inverted rounded-full inline-flex items-center justify-center mb-3 w-14 h-14">
-                      <span className="text-2xl">🚗</span>
-                    </div>
-                    <h5 className="text-xl font-semibold">Premium Quality</h5>
-                    <p className="text-gray-600">
-                      Hand-picked accessories from top manufacturers worldwide,
-                      ensuring durability and style.
-                    </p>
+              <Container className="w-full">
+                <div className="p-6 text-center">
+                  <div className="bg-ui-button-inverted rounded-full inline-flex items-center justify-center mb-3 w-14 h-14">
+                    <span className="text-2xl">🚗</span>
                   </div>
+                  <h5 className="text-xl font-semibold">Premium Quality</h5>
+                  <p className="text-gray-600">
+                    Hand-picked accessories from top manufacturers worldwide,
+                    ensuring durability and style.
+                  </p>
                 </div>
-              </div>
-              <div className="w-full">
-                <div className="h-full rounded-lg border-0 shadow-sm">
-                  <div className="p-6 text-center">
-                    <div className="bg-ui-button-inverted rounded-full inline-flex items-center justify-center mb-3 w-14 h-14">
-                      <span className="text-2xl">⚡</span>
-                    </div>
-                    <h5 className="text-xl font-semibold">Fast Installation</h5>
-                    <p className="text-gray-600">
-                      Easy-to-install products with detailed guides and
-                      professional installation services available.
-                    </p>
+              </Container>
+              <Container className="w-full">
+                <div className="p-6 text-center">
+                  <div className="bg-ui-button-inverted rounded-full inline-flex items-center justify-center mb-3 w-14 h-14">
+                    <span className="text-2xl">⚡</span>
                   </div>
+                  <h5 className="text-xl font-semibold">Fast Installation</h5>
+                  <p className="text-gray-600">
+                    Easy-to-install products with detailed guides and
+                    professional installation services available.
+                  </p>
                 </div>
-              </div>
-              <div className="w-full">
-                <div className="h-full rounded-lg border-0 shadow-sm">
-                  <div className="p-6 text-center">
-                    <div className="bg-ui-button-inverted rounded-full inline-flex items-center justify-center mb-3 w-14 h-14">
-                      <span className="text-2xl">🛡️</span>
-                    </div>
-                    <h5 className="text-xl font-semibold">Lifetime Warranty</h5>
-                    <p className="text-gray-600">
-                      Comprehensive warranty coverage on all products with 24/7
-                      customer support.
-                    </p>
+              </Container>
+              <Container className="w-full">
+                <div className="p-6 text-center">
+                  <div className="bg-ui-button-inverted rounded-full inline-flex items-center justify-center mb-3 w-14 h-14">
+                    <span className="text-2xl">🛡️</span>
                   </div>
+                  <h5 className="text-xl font-semibold">Lifetime Warranty</h5>
+                  <p className="text-gray-600">
+                    Comprehensive warranty coverage on all products with 24/7
+                    customer support.
+                  </p>
                 </div>
-              </div>
+              </Container>
             </div>
           </div>
         </section>

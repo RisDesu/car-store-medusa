@@ -7,6 +7,7 @@ import CartButton from "@modules/layout/components/cart-button"
 import SideMenu from "@modules/layout/components/side-menu"
 import { listCollections } from "@lib/data/collections"
 import { listCategories } from "@lib/data/categories"
+import Image from "next/image"
 
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
@@ -35,7 +36,13 @@ export default async function Nav() {
               className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
               data-testid="nav-store-link"
             >
-              Medusa Store
+              <Image
+                src="/img/vee_logo.png"
+                alt="Vee Store"
+                width={150}
+                height={20}
+                className="h-[60px] w-[80px]"
+              />
             </LocalizedClientLink>
           </div>
 
