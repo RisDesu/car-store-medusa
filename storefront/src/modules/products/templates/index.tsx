@@ -10,16 +10,19 @@ import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-relat
 import { notFound } from "next/navigation"
 import ProductActionsWrapper from "./product-actions-wrapper"
 import { HttpTypes } from "@medusajs/types"
+import ChatWidget from "@modules/layout/components/chat-widget"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   countryCode: string
+  customer?: HttpTypes.StoreCustomer | null
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({
   product,
   region,
+  customer,
   countryCode,
 }) => {
   if (!product || !product.id) {
@@ -62,6 +65,13 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           <RelatedProducts product={product} countryCode={countryCode} />
         </Suspense>
       </div>
+      {customer && (
+        <ChatWidget
+          customer={customer}
+          product={product}
+          chatPerProduct={true}
+        />
+      )}
     </>
   )
 }

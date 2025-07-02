@@ -23,6 +23,7 @@
     "predeploy": "medusa db:migrate"
   },
   "dependencies": {
+    "@connectycube/chat-widget-medusa-plugin": "^0.14.1",
     "@medusajs/admin-sdk": "2.8.5",
     "@medusajs/cli": "2.8.5",
     "@medusajs/framework": "2.8.5",

@@ -3,6 +3,37 @@ import { loadEnv, defineConfig } from "@medusajs/framework/utils";
 loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
 module.exports = defineConfig({
+  admin: {
+    vite: (config) => {
+      config.define["__VITE_CHAT_APP_ID__"] = JSON.stringify(
+        process.env.VITE_CHAT_APP_ID
+      );
+      config.define["__VITE_CHAT_AUTH_KEY__"] = JSON.stringify(
+        process.env.VITE_CHAT_AUTH_KEY
+      );
+      return {
+        optimizeDeps: {
+          include: [
+            "qs",
+            "eventemitter3",
+            "@xmpp/iq/callee",
+            "@xmpp/resolve",
+            "@xmpp/session-establishment",
+            "@xmpp/client-core",
+            "@xmpp/sasl-plain",
+            "@xmpp/stream-features",
+            "@xmpp/resource-binding",
+            "@xmpp/reconnect",
+            "@xmpp/middleware",
+            "@xmpp/sasl-anonymous",
+            "@xmpp/websocket",
+            "@xmpp/iq/caller",
+            "@xmpp/sasl",
+          ], // Will be merged with config that we use to run and build the dashboard.
+        },
+      };
+    },
+  },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     http: {
@@ -58,6 +89,12 @@ module.exports = defineConfig({
           },
         ],
       },
+    },
+  ],
+  plugins: [
+    {
+      resolve: "@connectycube/chat-widget-medusa-plugin",
+      options: {},
     },
   ],
 });

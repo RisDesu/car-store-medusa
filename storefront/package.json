@@ -16,6 +16,7 @@
     "shadcn@latest": "npx shadcn@latest"
   },
   "dependencies": {
+    "@connectycube/chat-widget": "^0.32.0",
     "@headlessui/react": "^2.2.0",
     "@medusajs/js-sdk": "latest",
     "@medusajs/ui": "latest",
