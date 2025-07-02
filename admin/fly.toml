@@ -1,7 +1,19 @@
+# fly.toml app configuration file generated for car-store-admin on 2025-07-02T21:21:03+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
 app = 'car-store-admin'
 primary_region = 'sin'
 
 [build]
+
+[env]
+  ADMIN_CORS = 'https://car-store-admin.fly.dev,https://car-store-medusa.vercel.app'
+  AUTH_CORS = 'https://car-store-admin.fly.dev,https://car-store-medusa.vercel.app'
+  MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY = 'car-store-storefront'
+  MEDUSA_ADMIN_ONBOARDING_TYPE = 'nextjs'
+  STORE_CORS = 'https://car-store-admin.fly.dev,https://car-store-medusa.vercel.app'
 
 [http_service]
   internal_port = 9000
@@ -15,10 +27,3 @@ primary_region = 'sin'
   memory = '2gb'
   cpu_kind = 'shared'
   cpus = 2
-
-[env]
-  MEDUSA_ADMIN_ONBOARDING_TYPE = "nextjs"
-  STORE_CORS = "https://car-store-admin.fly.dev,https://car-store-medusa.vercel.app"
-  ADMIN_CORS = "https://car-store-admin.fly.dev,https://car-store-medusa.vercel.app"
-  AUTH_CORS = "https://car-store-admin.fly.dev,https://car-store-medusa.vercel.app"
-  MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY = "car-store-storefront"
