@@ -65,13 +65,6 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           <RelatedProducts product={product} countryCode={countryCode} />
         </Suspense>
       </div>
-      {customer && (
-        <ChatWidget
-          customer={customer}
-          product={product}
-          chatPerProduct={true}
-        />
-      )}
     </>
   )
 }
